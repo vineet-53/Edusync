@@ -1,0 +1,5 @@
+frontend/src/components/core/Dashboard/AddCourse/CourseInformation/CourseInformationForm.jsx
+frontend/src/services/operations/courseDetailsAPI.js
+backend/routes/Course.js
+frontend/src/components/core/Dashboard/AddCourse/CourseBuilder/CourseBuilderForm.jsx
+frontend/src/components/core/Dashboard/AddCourse/PublishCourse/index.jsx
