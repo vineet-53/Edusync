@@ -1,4 +1,4 @@
-# [EduSync app](https://edu-sync-platform-mady-by-vineet-singh.vercel.app/) for learning purpose
+# [Edusync app](https://edu-sync-platform-mady-by-vineet-singh.vercel.app/) for learning purpose
 [Live](https://edu-sync-platform-mady-by-vineet-singh.vercel.app/)
 * app in which instructor upload their courses 
 
