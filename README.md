@@ -55,7 +55,7 @@ An online learning platform where **instructors can upload courses** and **stude
 - ✅ Better state management (Redux/Zustand)  
 - ✅ Payment integration (Stripe/Razorpay) for course purchase  
 - ✅ Responsive UI improvements for mobile users  
-- ✅ Upload course content (videos, PDFs, etc.)  
+- ✅ Upload course content (PDFs, etc.)  
 
 ---
 
