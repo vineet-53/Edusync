@@ -38,6 +38,12 @@ An online learning platform where **instructors can upload courses** and **stude
 - 🛤️ Wrong usage of **nested outlet routes** (e.g., `/dashboard` parent + `/dashboard/my-profile` child)  
 - ⌨️ A single **spelling mistake in backend code** caused 30+ mins of debugging time 😅  
 - ➕ Added **Resend OTP** feature after signup  
+---
+
+# Model Architecture
+
+<img width="1216" height="626" alt="image" src="https://github.com/user-attachments/assets/4a9e7247-aaf4-4ea5-a1ca-71db04cb790f" />
+
 
 ---
 
