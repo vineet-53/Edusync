@@ -27,21 +27,47 @@ function SignupForm() {
     confirmPassword: "",
   })
 
+  const [error ,setError] = useState(false);
+  const [errorMessage , setErrorMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const { firstName, lastName, email, password, confirmPassword } = formData
 
+  function testStrongPassword() { 
+    let isStrongPassword;
+  const strongPassword =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+  isStrongPassword = strongPassword.test(password);
+    if(!isStrongPassword)
+    throw new Error("⚠️ Password is not strong enough")
+  }
 
   // Handle input fields, when some value changes
   function handleOnChange(e) {
-    setFormData( (prevData) =>({ ...prevData , [e.target.name] : e.target.value })                        
-)}
+    setFormData( (prevData) =>({ ...prevData , [e.target.name] : e.target.value }))
+  }
 
   // Handle Form Submission
   function handleOnSubmit(e){
     e.preventDefault();
-    if(password !== confirmPassword) {toast.error("Passwords do not match");  return ; }
+
+    try { 
+      if(password !== confirmPassword) {
+        throw new Error("Password Mismatch, Try Again!")
+      }
+      testStrongPassword();
+    }
+    catch(error) { 
+      setError(true);
+      console.log(error)
+      setErrorMessage(error.message)
+      return;
+    }
+    setError(false);
+    setErrorMessage("")
     const signupData = { ...formData , accountType};
+
     dispatch(setSignupData(signupData))                                    // Setting signup data to state To be used after otp verification
     dispatch(sendOtp(formData.email, navigate))                           // Send OTP to user for verification
     setFormData({firstName: "", lastName: "",  email: "",  password: "",  confirmPassword: "",})           // Reset
@@ -74,6 +100,14 @@ function SignupForm() {
 
       {/* Form */}
       <form onSubmit={handleOnSubmit} className="flex w-full flex-col gap-y-4">
+    { 
+      error && <div id="error" className="mt-3 rounded-md border border-red-300 bg-red-50 py-3 text-sm font-medium text-red-700">
+        <p className="text-pink-400 ">
+        {errorMessage}
+
+        </p>
+        </div>
+    }
 
         <div className="flex gap-x-4">
 
@@ -100,7 +134,8 @@ function SignupForm() {
 
             <label className='relative'>
                 <p className='text-[0.875rem] text-richblack-5 mb-1 leading-[1.375rem]'>Create Password<sup className='text-pink-200'>*</sup></p>
-                <input  required  type = {showPassword ? ("text") : ("password")}  name="password"  onChange={handleOnChange}  value={password}  placeholder="Enter Password" style={{boxShadow: "inset 0px -1px 0px rgba(255, 255, 255, 0.18)", }}  className='bg-richblack-800 rounded-[0.5rem] text-richblack-5 w-full p-[12px]' />
+                <input 
+                 required  type = {showPassword ? ("text") : ("password")}  name="password"  onChange={handleOnChange}  value={password}  placeholder="Enter Password" style={{boxShadow: "inset 0px -1px 0px rgba(255, 255, 255, 0.18)", }}  className='bg-richblack-800 rounded-[0.5rem] text-richblack-5 w-full p-[12px]' />
             
                 <span  className='absolute right-3 top-[38px] cursor-pointer' onClick={() => setShowPassword((prev) => !prev)}>
                     {showPassword ? (<AiOutlineEyeInvisible fontSize={24} fill='#AFB2BF'/>) : (<AiOutlineEye fontSize={24} fill='#AFB2BF'/>)}
@@ -109,7 +144,8 @@ function SignupForm() {
 
             <label className='relative'>
                 <p className='text-[0.875rem] text-richblack-5 mb-1 leading-[1.375rem]'>Confirm Password<sup className='text-pink-200'>*</sup></p>
-                <input  required  type = {showConfirmPassword ? ("text") : ("password")}  name="confirmPassword"  onChange={handleOnChange}  value={confirmPassword}  placeholder="Confirm Password" style={{boxShadow: "inset 0px -1px 0px rgba(255, 255, 255, 0.18)", }} className='bg-richblack-800 rounded-[0.5rem] text-richblack-5 w-full p-[12px]' />
+                <input  
+                required  type = {showConfirmPassword ? ("text") : ("password")}  name="confirmPassword"  onChange={handleOnChange}  value={confirmPassword}  placeholder="Confirm Password" style={{boxShadow: "inset 0px -1px 0px rgba(255, 255, 255, 0.18)", }} className='bg-richblack-800 rounded-[0.5rem] text-richblack-5 w-full p-[12px]' />
             
                 <span  className='absolute right-3 top-[38px] cursor-pointer' onClick={() => setShowConfirmPassword((prev) => !prev)}>
                     {showConfirmPassword ? (<AiOutlineEyeInvisible fontSize={24} fill='#AFB2BF'/>) : (<AiOutlineEye fontSize={24} fill='#AFB2BF'/>)}
