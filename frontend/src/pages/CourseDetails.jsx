@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react"
 import { BiInfoCircle } from "react-icons/bi"
 import { HiOutlineGlobeAlt } from "react-icons/hi"
 import { ReactMarkdown } from "react-markdown/lib/react-markdown"
-import {  useSelector } from "react-redux"
-import {  useParams } from "react-router-dom"
+import {  useDispatch, useSelector } from "react-redux"
+import {  useNavigate, useParams } from "react-router-dom"
 
 import ConfirmationModal from "../components/common/ConfirmationModal"
 import Footer from "../components/common/Footer"
@@ -14,6 +14,9 @@ import { formatDate } from "../services/formatDate"
 import { fetchCourseDetails } from "../services/operations/courseDetailsAPI"
 import GetAvgRating from "../utils/avgRating"
 import Error from "./Error"
+import { ACCOUNT_TYPE } from "../utils/constants"
+import toast from "react-hot-toast"
+import { buyCourse } from "../services/operations/studentFeaturesAPI"
 
 
 
@@ -23,7 +26,8 @@ function CourseDetails(){
   const { courseId } = useParams()
   const [response, setResponse] = useState(null)
   const [confirmationModal, setConfirmationModal] = useState(null)
-
+  const {user} = useSelector(state => state.profile)
+  const {token} = useSelector(state => state.auth)
   useEffect(() => {
     ;(async () => {
       try {
@@ -67,6 +71,8 @@ function CourseDetails(){
   }
   if(!response.success) return <Error/>
 
+  const navigate = useNavigate(); 
+  const dispatch = useDispatch(); 
   const {
     _id: course_id,
     courseName,
@@ -82,6 +88,26 @@ function CourseDetails(){
   } = response.data?.courseDetails
 
   const handleBuyCourse = () => {
+    if(user && token) { 
+      if(user?.accountType === ACCOUNT_TYPE.INSTRUCTOR)
+      {
+        toast.error("Instructors can't buy the Course.")
+        return;
+      }
+      buyCourse(token, [courseId], user, navigate, dispatch)
+    }
+    else { 
+       setConfirmationModal({
+      text1: "You are not logged in!",
+      text2: "Please login to Purchase Course.",
+      btn1Text: "Login",
+      btn2Text: "Cancel",
+      btn1Handler: () => navigate("/login"),
+      btn2Handler: () => setConfirmationModal(null),
+    })
+    }
+    
+    console.log("HEY I WANT THIS COURSE")
   }
 
   if(paymentLoading) {
