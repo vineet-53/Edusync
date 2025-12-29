@@ -1,7 +1,7 @@
 import toast from "react-hot-toast";
 import edusync from "../../assets/Logo/logo"
 import { apiConnector } from "../apiconnector";
-import { courseEndpoints } from "../apis";
+import { studentEndpoints } from "../apis";
 import { resetCart } from "../../slices/cartSlice";
 
 // embedding the razorpay script for the razorpay UI
@@ -31,7 +31,7 @@ export async function buyCourse(token, courses, userDetails, navigate, dispatch)
             return;
         }
 
-        const orderResponse = await apiConnector("POST", courseEndpoints.COURSE_PAYMENT_API, { courses }, {
+        const orderResponse = await apiConnector("POST", studentEndpoints.COURSE_PAYMENT_API, { courses }, {
             Authorization: `Bearer ${token}`
         });
 
@@ -58,6 +58,12 @@ export async function buyCourse(token, courses, userDetails, navigate, dispatch)
                 verifyPayment({ ...response, courses }, token, navigate, dispatch);
             }
         }
+
+        const paymentObject = new window.Razorpay(options); 
+        paymentObject.open(); 
+        paymentObject.on("payment.failed", function (response) {
+            toast.error("Payment Failed")
+        })
     }
     catch (err) {
         toast.error("Error making payment")
@@ -69,7 +75,7 @@ export async function buyCourse(token, courses, userDetails, navigate, dispatch)
 
 async function sendPaymentSuccessEmail(response, amount, token) {
     try{
-        await apiConnector("POST", courseEndpoints.SEND_PAYMENT_SUCCESS_EMAIL_API, {
+        await apiConnector("POST", studentEndpoints.SEND_PAYMENT_SUCCESS_EMAIL_API, {
             orderId: response.razorpay_order_id,
             paymentId: response.razorpay_payment_id,
             amount,
@@ -87,7 +93,7 @@ async function verifyPayment(bodyData, token, navigate, dispatch) {
     const toastId = toast.loading("Verifying Payment....");
     dispatch(setPaymentLoading(true));
     try{
-        const response  = await apiConnector("POST", courseEndpoints.COURSE_VERIFY_API, bodyData, {
+        const response  = await apiConnector("POST", studentEndpoints.COURSE_VERIFY_API, bodyData, {
             Authorization:`Bearer ${token}`,
         })
 
