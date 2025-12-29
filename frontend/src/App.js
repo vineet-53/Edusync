@@ -31,6 +31,7 @@ import VerifyEmail from "./pages/VerifyEmail"
 import ViewCourse from "./pages/ViewCourse"
 import { getUserDetails } from "./services/operations/profileAPI"
 import { ACCOUNT_TYPE } from "./utils/constants"
+import BrowseCourses from "./pages/BrowseCourses"
 
 
 
@@ -65,6 +66,7 @@ function App() {
           <Route path="verify-email" element = { <OpenRoute> <VerifyEmail /> </OpenRoute> } />
           <Route path="update-password/:id" element = { <OpenRoute> <UpdatePassword /> </OpenRoute> } />
           <Route path="about" element = { <OpenRoute> <About /> </OpenRoute> } />
+          <Route path="browse-courses" element = {  <BrowseCourses /> } />
           <Route path="/contact" element={<Contact />} />
 
           <Route element = {<PrivateRoute> <Dashboard /> </PrivateRoute>} >
