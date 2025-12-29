@@ -52,8 +52,20 @@ function Navbar() {
         <nav className="hidden md:block">                                                                    {/* Navigation links */}
           <ul className="flex gap-x-6 text-richblack-25">
 
-            {NavbarLinks.map((link, index) => (
-
+            {NavbarLinks.map((link, index) => {
+              if(user || token) { 
+               if(link.title == "About Us" ) { 
+                return <></>
+              } 
+              if(link.title == "Home") { 
+                link.path = "/dashboard/my-profile" 
+                 return <Link to={link?.path}>
+                    <p className={` ${matchRoute(link?.path) ? "text-yellow-25" : "text-richblack-25"} `}> {link.title}  </p>
+                  </Link>
+              }
+              }
+              
+              return <>
               <li key={index}>
                 {link.title === "Catalog" ? (
 
@@ -86,8 +98,9 @@ function Navbar() {
                 )
                 }
               </li>
+              </>
 
-            ))
+            })
             }
 
           </ul>

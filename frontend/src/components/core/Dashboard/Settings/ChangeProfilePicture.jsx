@@ -70,9 +70,12 @@ export default function ChangeProfilePicture() {
               <button onClick={handleClick} disabled={loading} className="cursor-pointer rounded-md bg-richblack-700 py-2 px-5 font-semibold text-richblack-50" >
                 Select
               </button>
-              <IconBtn text={loading ? "Uploading..." : "Upload"} onclick={handleFileUpload} >
+             {
+              imageFile && 
+               <IconBtn text={loading ? "Uploading..." : "Upload"} onclick={handleFileUpload} >
                 {!loading && ( <FiUpload className="text-lg text-richblack-900" /> )}
               </IconBtn>
+             }
             </div>
           </div>
         
