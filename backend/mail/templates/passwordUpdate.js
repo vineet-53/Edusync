@@ -1,3 +1,5 @@
+const logo = "https://res.cloudinary.com/dhidi3gwx/image/upload/v1767080244/edusync/ekiectm1a81gipkoo2gb.png";
+
 exports.passwordUpdated = (email, name) => {
   return `<!DOCTYPE html>
     <html>
@@ -56,7 +58,7 @@ exports.passwordUpdated = (email, name) => {
     <body>
         <div class="container">
             <a href=""><img class="logo"
-                    src="https://i.ibb.co/7Xyj3PC/logo.png" alt=""></a>
+                    src=${logo} alt=""></a>
             <div class="message">Password Update Confirmation</div>
             <div class="body">
                 <p>Hey ${name},</p>

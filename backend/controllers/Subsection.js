@@ -3,13 +3,13 @@ const SubSection = require("../models/SubSection");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
 
 
-// Create a new sub-section for a given section
 exports.createSubSection = async (req, res) => {
     try {
-      const { sectionId, title, description } = req.body                 // Extract necessary information from the request body
+      const { sectionId, title, description } = req.body                 
+
       const video = req.files.video
        
-      if(!sectionId || !title || !description || !video){               // Check if all necessary fields are provided
+      if(!sectionId || !title || !description || !video){               
         return res.status(404).json({ success: false, message: "All Fields are Required" })  
       }
      
@@ -27,9 +27,9 @@ exports.createSubSection = async (req, res) => {
       // Update the corresponding section with the newly created sub-section
       const updatedSection = await Section.findByIdAndUpdate({ _id: sectionId },  {$push: { subSection: SubSectionDetails._id }}, {new: true}).populate("subSection")
 
-      return res.status(200).json({ success: true, data: updatedSection })             // Return the updated section in the response
+      return res.status(200).json({ success: true, data: updatedSection })             
     }
-     catch (error){                                                   // Handle any errors that may occur during the process
+     catch (error){
       return res.status(500).json({
         success: false,
         message: "Internal server error",

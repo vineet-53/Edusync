@@ -1,18 +1,12 @@
-const logo = "https://res.cloudinary.com/dhidi3gwx/image/upload/v1767080244/edusync/ekiectm1a81gipkoo2gb.png";
-exports.contactUsEmail = (
-  email,
-  firstname,
-  lastname,
-  message,
-  phoneNo,
-  countrycode,
-) => {
-  return `<!DOCTYPE html>
-    <html>
 
+const logo = "https://res.cloudinary.com/dhidi3gwx/image/upload/v1767080244/edusync/ekiectm1a81gipkoo2gb.png";
+exports.paymentSuccess = (amount, paymentId, orderId, name,lastname) => {
+    return `<!DOCTYPE html>
+    <html>
+    
     <head>
         <meta charset="UTF-8">
-        <title>Contact Form Confirmation</title>
+        <title>Course Registration Confirmation</title>
         <style>
             body {
                 background-color: #ffffff;
@@ -23,31 +17,31 @@ exports.contactUsEmail = (
                 margin: 0;
                 padding: 0;
             }
-
-
+    
+    
             .container {
                 max-width: 600px;
                 margin: 0 auto;
                 padding: 20px;
                 text-align: center;
             }
-
+    
             .logo {
                 max-width: 200px;
                 margin-bottom: 20px;
             }
-
+    
             .message {
                 font-size: 18px;
                 font-weight: bold;
                 margin-bottom: 20px;
             }
-
+    
             .body {
                 font-size: 16px;
                 margin-bottom: 20px;
             }
-
+    
             .cta {
                 display: inline-block;
                 padding: 10px 20px;
@@ -59,40 +53,41 @@ exports.contactUsEmail = (
                 font-weight: bold;
                 margin-top: 20px;
             }
-
+    
             .support {
                 font-size: 14px;
                 color: #999999;
                 margin-top: 20px;
             }
-
+    
             .highlight {
                 font-weight: bold;
             }
         </style>
-
+    
     </head>
-
+    
     <body>
         <div class="container">
-            <a href=""><img class="logo"
-                    src=${logo} alt=""></a>
-            <div class="message">Contact Form Confirmation</div>
-            <div class="body">
-                <p>Dear ${firstname} ${lastname},</p>
-                <p>Thank you for contacting us. We have received your message and will respond to you as soon as possible.
-                </p>
-                <p>Here are the details you provided:</p>
-                <p>Name: ${firstname} ${lastname}</p>
-                <p>Email: ${email}</p>
-                <p>Phone Number: ${phoneNo}</p>
-                <p>Message: ${message}</p>
-                <p>We appreciate your interest and will get back to you shortly. </p>
+            <a href=""><img class="logo" src=${logo}
+                    alt="Edusync logo"></a>
+            <div class="message">
+            Your payment of ₹${amount} has been successfully received.
             </div>
-            <div class="support">If you have any further questions or need immediate assistance, please feel free to reach
-                out to us at <a href="mailto:info@edusync.com">info@edusync.com</a>. We are here to help!</div>
+            <div class="body">
+                <p>Dear ${name} ${lastname},</p>
+                <p>
+                    Thank you for purchasing the course. Your payment of ₹${amount} has been successfully received.
+                </p>
+                <p>
+                    Your payment ID is <span class="highlight">${paymentId}</span> and your order ID is <span
+                        class="highlight">${orderId}</span>.
+                </p>
+            </div>
+            <div class="support">If you have any questions or need assistance, please feel free to reach out to us at <a
+                    href="mailto:info@edusync.com">info@edusync.com</a>. We are here to help!</div>
         </div>
     </body>
-
+    
     </html>`;
-};
+  };

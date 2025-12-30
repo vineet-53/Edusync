@@ -1,12 +1,23 @@
-const User = require("../models/User");
-const mailSender = require("../utils/mailSender");
+// package imports 
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 
+// file imports 
+const User = require("../models/User");
+const mailSender = require("../utils/mailSender");
+
 const resetPasswordToken = async (req, res) => {
   try {
-    const email = req.body.email; //get email from req body
-    const user = await User.findOne({ email: email }); //check user for this email,find user which email is matched to this email;
+    const email = req.body.email;
+
+    if (!email) {
+      return res.json({
+        success: false,
+        message: "Missing fields.",
+      });
+    }
+    const user = await User.findOne({ email: email });
+
     if (!user) {
       return res.json({
         success: false,
@@ -14,8 +25,9 @@ const resetPasswordToken = async (req, res) => {
       });
     }
 
-    const token = crypto.randomBytes(20).toString("hex"); //generate token and we add expiration time in that token and then we add that token
-    const updatedDetails = await User.findOneAndUpdate(
+    const token = crypto.randomBytes(20).toString("hex"); 
+
+    await User.findOneAndUpdate(
       { email: email },
       {
         token: token,
@@ -24,7 +36,8 @@ const resetPasswordToken = async (req, res) => {
       { new: true },
     );
 
-    const url = `http://localhost:3000/update-password/${token}`; //create url
+    const url = `http://localhost:3000/update-password/${token}`; 
+
     await mailSender(
       email,
       "Password Reset Link",
@@ -46,12 +59,13 @@ const resetPasswordToken = async (req, res) => {
 
 const resetPassword = async (req, res) => {
   try {
-    const { password, confirmPassword, token } = req.body; //data fetch
+    const { password, confirmPassword, token } = req.body; 
+
     if (password !== confirmPassword) {
       return res.json({ success: false, message: "Password not matching" });
     }
 
-    const userDetails = await User.findOne({ token: token }); //get userdetails from db using token
+    const userDetails = await User.findOne({ token: token }); 
     if (!userDetails) {
       return res.json({ success: false, message: "Token is invalid" });
     }
@@ -63,7 +77,7 @@ const resetPassword = async (req, res) => {
       });
     }
 
-    const encryptedPassword = await bcrypt.hash(password, 10); //hash password
+    const encryptedPassword = await bcrypt.hash(password, 10); 
 
     await User.findOneAndUpdate(
       { token: token },

@@ -1,15 +1,15 @@
+const User = require("../models/User")
 const Course = require("../models/Course")
 const CourseProgress = require("../models/CourseProgress")
-const User = require("../models/User")
 const mailSender = require("../utils/mailSender")
 const mongoose = require("mongoose")
 const { instance } = require("../config/razorpay")
-const paymentSuccess = require("../mail/templates/paymentSuccess")
+const {paymentSuccess} = require("../mail/templates/paymentSuccess.js")
 const crypto = require("crypto")
-const courseEnrollmentEmail = require('../mail/templates/courseEnrollmentEmail')
+const {courseEnrollmentEmail} = require('../mail/templates/courseEnrollmentEmail')
 
 // create the order
-export async function capturePayment(req, res) {
+exports.capturePayment = async (req, res) => {
     const { courses } = req.body;
     const userId = req.user.id;
     try {
@@ -67,7 +67,7 @@ export async function capturePayment(req, res) {
                 message: "Success intilize order",
                 currency: paymentRes.currency,
                 amount: paymentRes.amount,
-
+                id : paymentRes.id
             })
         }
         catch (error) {
@@ -86,7 +86,8 @@ export async function capturePayment(req, res) {
         });
     }
 }
-export async function sendPaymentSuccessEmail(req, res) {
+
+exports.sendPaymentSuccessEmail = async (req, res) => {
     const { amount, orderId, paymentId } = req.body
     const userId = req.user.id;
 
@@ -112,12 +113,14 @@ export async function sendPaymentSuccessEmail(req, res) {
         });
     }
 }
-export async function verifySignature(req, res) {
+
+exports.verifySignature = async (req, res) => {
     // get and validate the payment details 
 
     const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = req.body;
     const { courses } = req.body;
     const userId = req.user.id;
+
 
     if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
         return res.status(400).json({
@@ -193,24 +196,27 @@ export async function verifySignature(req, res) {
 
     // verify the signature 
     try {
+        const body = `${razorpay_order_id}|${razorpay_payment_id}`
         const generatedSignature = crypto.createHmac("sha256", process.env.RAZORPAY_SECRET).update(body.toString()).digest("hex");
-        if(generatedSignature === razorpay_signature) { 
-            await enrolleStudent(courses , userId); 
+        console.log("VERFYING SIGNATURE")
+        if (generatedSignature === razorpay_signature) {
+            await enrolleStudent(courses, userId);
+            return res.status(200).json({  
+                success : true, 
+                message : "Payment Success"
+            })
         }
-        else { 
-            return res.status(200).json({
-                success: true,
-                message: 'Signature Mismatch, Invalid Signature',
-            }); 
+        else {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid Signature Found.",
+            });
         }
     } catch (error) {
-              console.error(error);
-            return res.status(500).json({
-                success:false,
-                message:error.message,
-            });
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            message: error.message,
+        });
     }
-
-
-
 }

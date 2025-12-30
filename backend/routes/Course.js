@@ -39,6 +39,7 @@ const {
 } = require("../middlewares/auth"); // Importing Middlewares
 const { updateCourseProgress } = require("../controllers/courseProgress");
 
+// INSTRUCTOR ROUTES 
 router.post("/createCourse", auth, isInstructor, createCourse); // Courses can Only be Created by Instructors
 router.post("/addSection", auth, isInstructor, createSection); //Add a Section to a Course
 router.post("/updateSection", auth, isInstructor, updateSection); // Update a Section
@@ -49,22 +50,18 @@ router.post("/addSubSection", auth, isInstructor, createSubSection);
 router.get("/getAllCourses", getAllCourses); // Get all Registered Courses
 router.post("/getCourseDetails", getCourseDetails); // Get Details for a Specific Courses
 
-router.post("/getFullCourseDetails", auth, getFullCourseDetails);
 router.post("/editCourse", auth, isInstructor, editCourse); // Edit Course routes
 router.get("/getInstructorCourses", auth, isInstructor, getInstructorCourses); // Get all Courses Under a Specific Instructor
 router.delete("/deleteCourse", deleteCourse); // Delete a Course
 router.post("/updateCourseProgress", auth, isStudent, updateCourseProgress);
 
-// ********************************************************************************************************
-//                                      Category routes (Only by Admin)                                   *
-// ********************************************************************************************************
+// ADMIN ROUTES
 router.post("/createCategory", auth, isAdmin, createCategory);
 router.get("/showAllCategories", showAllCategories);
 router.post("/getCategoryPageDetails", categoryPageDetails);
 
-// ********************************************************************************************************
-//                                      Rating and Review (only by Student)                               *
-// ********************************************************************************************************
+// STUDENT ROUTES
+router.post("/getFullCourseDetails", auth, isStudent, getFullCourseDetails);
 router.post("/createRating", auth, isStudent, createRating);
 router.get("/getAverageRating", getAverageRating);
 router.get("/getReviews", getAllRating);

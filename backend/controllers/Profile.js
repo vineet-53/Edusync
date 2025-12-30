@@ -11,6 +11,7 @@ const { convertSecondsToDuration } = require("../utils/secToDuration")
 exports.updateProfile = async (req, res) => {
   try {
     const {firstName = "",  lastName = "", dateOfBirth = "",  about = "",  contactNumber = "",  gender = "", } = req.body
+
     const id = req.user.id
 
     // Find the profile by id
@@ -56,12 +57,13 @@ exports.deleteAccount = async (req, res) => {
       return res.status(404).json({ success: false,  message: "User not found", })
     }
 
-    // Delete Assosiated Profile with the User , note we used here "new mongoose.Types.ObjectId()" to convert string into object;
-    await Profile.findByIdAndDelete({ _id: new mongoose.Types.ObjectId(user.additionalDetails), })
+    await Profile.findByIdAndDelete({ _id: new mongoose.Types.ObjectId(user.additionalDetails) })
       
     for(const courseId of user.courses) {
       await Course.findByIdAndUpdate(courseId, {$pull: {studentsEnrolled: id}}, {new: true} )
     }
+    
+    await CourseProgress.deleteMany({ userId: id })
 
     // Now Delete User
     await User.findByIdAndDelete({ _id: id })
@@ -71,7 +73,6 @@ exports.deleteAccount = async (req, res) => {
       message: "User deleted successfully",
     })
 
-    await CourseProgress.deleteMany({ userId: id })
   } 
   catch (error){
          res.status(500).json({ success: false, message: "User Cannot be deleted successfully" }) 
@@ -125,6 +126,8 @@ exports.updateDisplayPicture = async (req, res) => {
 exports.getEnrolledCourses = async (req, res) => {
   try {
     const userId = req.user.id
+
+    // getting user details 
     let userDetails = await User.findOne({ _id: userId, })
         .populate({
           path: "courses",
@@ -136,9 +139,13 @@ exports.getEnrolledCourses = async (req, res) => {
           },
         })
         .exec() 
+
     userDetails = userDetails.toObject()
-    var SubsectionLength = 0
-    for(var i = 0; i < userDetails.courses.length; i++) {
+
+    let SubsectionLength = 0
+
+    // calculating lecture total lecture lengths and total lectures 
+    for(let i = 0; i < userDetails.courses.length; i++) {
       let totalDurationInSeconds = 0
       SubsectionLength = 0
       for(var j = 0; j < userDetails.courses[i].courseContent.length; j++){
@@ -146,12 +153,16 @@ exports.getEnrolledCourses = async (req, res) => {
           userDetails.courses[i].totalDuration = convertSecondsToDuration(totalDurationInSeconds)
           SubsectionLength +=  userDetails.courses[i].courseContent[j].subSection.length
       }
+
+      // getting the completed video
       let courseProgressCount = await CourseProgress.findOne({courseID: userDetails.courses[i]._id,  userId: userId,})
+
       courseProgressCount = courseProgressCount?.completedVideos.length
+      // finding the progress percentage 
       if(SubsectionLength === 0) {
         userDetails.courses[i].progressPercentage = 100
       } 
-      else {                                             // To make it up to 2 decimal point 
+      else {                                          
         const multiplier = Math.pow(10, 2)
         userDetails.courses[i].progressPercentage =  Math.round( (courseProgressCount / SubsectionLength) * 100 * multiplier ) / multiplier
       }
@@ -188,7 +199,7 @@ exports.instructorDashboard = async (req, res) => {
         _id: course._id,
         courseName: course.courseName,
         courseDescription: course.courseDescription,
-        totalStudentsEnrolled,                               // Include other course properties as needed
+        totalStudentsEnrolled,
         totalAmountGenerated,
       }
       return courseDataWithStats

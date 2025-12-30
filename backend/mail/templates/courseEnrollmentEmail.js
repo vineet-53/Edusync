@@ -1,3 +1,4 @@
+const logo = "https://res.cloudinary.com/dhidi3gwx/image/upload/v1767080244/edusync/ekiectm1a81gipkoo2gb.png";
 exports.courseEnrollmentEmail = (courseName, name) => {
   return `<!DOCTYPE html>
     <html>
@@ -67,7 +68,7 @@ exports.courseEnrollmentEmail = (courseName, name) => {
 
     <body>
         <div class="container">
-            <a href=""><img class="logo" src="https://i.ibb.co/7Xyj3PC/logo.png"
+            <a href=""><img class="logo" src=${logo}
                     alt=""></a>
             <div class="message">Course Registration Confirmation</div>
             <div class="body">

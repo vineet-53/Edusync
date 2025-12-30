@@ -1,6 +1,5 @@
+const logo = "https://res.cloudinary.com/dhidi3gwx/image/upload/v1767080244/edusync/ekiectm1a81gipkoo2gb.png";
 const otpTemplate = (otp) => {
-  const logo =
-    "https://edusync.com/wp-content/themes/edusync/templates/parts/logos/logo.svg";
   return `<!DOCTYPE html>
 	<html>
 
