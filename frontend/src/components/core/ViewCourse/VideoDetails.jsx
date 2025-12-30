@@ -14,7 +14,7 @@ const VideoDetails = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const playerRef = useRef(null)
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth)
   const { courseSectionData, courseEntireData, completedLectures } =  useSelector((state) => state.viewCourse)
 

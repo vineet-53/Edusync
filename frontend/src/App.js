@@ -78,6 +78,7 @@ function App() {
                                     <>
                                         <Route path="dashboard/cart" element={<Cart />} />
                                         <Route path="dashboard/enrolled-courses" element={<EnrolledCourses />} />
+                                        <Route path="/view-course/:courseId" element = {<ViewCourse />}/>
                                     </>
                                 )
                   }

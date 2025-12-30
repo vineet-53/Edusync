@@ -28,6 +28,8 @@ function CourseDetails(){
   const [confirmationModal, setConfirmationModal] = useState(null)
   const {user} = useSelector(state => state.profile)
   const {token} = useSelector(state => state.auth)
+  const navigate = useNavigate(); 
+  const dispatch = useDispatch(); 
   useEffect(() => {
     ;(async () => {
       try {
@@ -71,8 +73,6 @@ function CourseDetails(){
   }
   if(!response.success) return <Error/>
 
-  const navigate = useNavigate(); 
-  const dispatch = useDispatch(); 
   const {
     _id: course_id,
     courseName,
@@ -107,7 +107,6 @@ function CourseDetails(){
     })
     }
     
-    console.log("HEY I WANT THIS COURSE")
   }
 
   if(paymentLoading) {

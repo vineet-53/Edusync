@@ -12,7 +12,6 @@ const {SENDOTP_API,  SIGNUP_API, LOGIN_API, RESETPASSTOKEN_API, RESETPASSWORD_AP
 
 export function sendOtp(email, navigate) {
   return async (dispatch) => {
-    const toastId = toast.loading("Loading...")
     dispatch(setLoading(true))
     try {
       const response = await apiConnector("POST", SENDOTP_API, {email, checkUserPresent: true,})
@@ -27,7 +26,6 @@ export function sendOtp(email, navigate) {
       toast.error("Could Not Send OTP")
     }
     dispatch(setLoading(false))
-    toast.dismiss(toastId)
   }
 }
 

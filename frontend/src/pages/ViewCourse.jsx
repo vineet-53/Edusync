@@ -10,18 +10,18 @@ import { getFullDetailsOfCourse } from "../services/operations/courseDetailsAPI"
 
 export default function ViewCourse() {
 
-  const { courseId } = useParams()
+  const { courseId , sectionId , subSectionId } = useParams()
   const { token } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
   const [reviewModal, setReviewModal] = useState(false)
 
   useEffect(() => {
     ;(async () => {
-      const courseData = await getFullDetailsOfCourse(courseId, token)
+      const courseData = await getFullDetailsOfCourse(courseId, token, dispatch)
       let lectures = 0
       courseData?.courseDetails?.courseContent?.forEach((sec) => { lectures += sec.subSection.length })
     })()
-  }, [])
+  }, [courseId, sectionId, subSectionId])
 
 
 

@@ -34,13 +34,8 @@ function SignupForm() {
   const { firstName, lastName, email, password, confirmPassword } = formData
 
   function testStrongPassword() { 
-    let isStrongPassword;
-  const strongPassword =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    // create the regex to check the strength
 
-  isStrongPassword = strongPassword.test(password);
-    if(!isStrongPassword)
-    throw new Error("⚠️ Password is not strong enough")
   }
 
   // Handle input fields, when some value changes

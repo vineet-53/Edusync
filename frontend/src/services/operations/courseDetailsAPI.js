@@ -1,6 +1,7 @@
 import { toast } from "react-hot-toast"
 import { apiConnector } from "../apiconnector"
 import { courseEndpoints } from "../apis"
+import { setCompletedLecture, setCourseEntireData, setCourseId, setCourseSectionData } from "../../slices/viewCourseSlice"
 
 
 const {
@@ -312,9 +313,7 @@ export const deleteCourse = async (data, token) => {
 
 
 // get full details of a course
-export const getFullDetailsOfCourse = async (courseId, token) => {
-  //const toastId = toast.loading("Loading...")
-  //   dispatch(setLoading(true));
+export const getFullDetailsOfCourse = async (courseId, token , dispatch) => {
   let result = null
   try {
     const response = await apiConnector( "POST",  GET_FULL_COURSE_DETAILS_AUTHENTICATED,  {courseId,}, { Authorization: `Bearer ${token}`, } )
@@ -324,14 +323,15 @@ export const getFullDetailsOfCourse = async (courseId, token) => {
       throw new Error(response.data.message)
     }
     result = response?.data?.data
+    dispatch(setCourseSectionData(response.data.data.courseDetails.courseContent))
+    dispatch(setCourseEntireData(response.data.data.courseDetails.courseContent))
+    dispatch(setCompletedLecture(response.data.data.completedVideos))
+    dispatch(setCourseId(courseId))
   } 
   catch (error) {
     console.log("COURSE_FULL_DETAILS_API API ERROR............", error)
     result = error.response.data
-    // toast.error(error.response.data.message);
   }
- // toast.dismiss(toastId)
-  //   dispatch(setLoading(false));
   return result
 }
 

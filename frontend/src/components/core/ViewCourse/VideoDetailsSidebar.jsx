@@ -13,7 +13,11 @@ export default function VideoDetailsSidebar({ setReviewModal }){
   const navigate = useNavigate()
   const location = useLocation()
   const { sectionId, subSectionId } = useParams()
-  const {courseSectionData, courseEntireData, totalNoOfLectures, completedLectures, } = useSelector((state) => state.viewCourse)
+  const {courseId, courseSectionData, courseEntireData, totalNoOfLectures, completedLectures, } = useSelector((state) => state.viewCourse)
+
+  const handleCompleteLecture = () => { 
+
+  }
 
   useEffect(() => {
     ;(() => {
@@ -75,11 +79,11 @@ export default function VideoDetailsSidebar({ setReviewModal }){
                     <div className={`flex gap-3  px-5 py-2 ${videoBarActive === topic._id  ? "bg-yellow-200 font-semibold text-richblack-800" : "hover:bg-richblack-900" } `}
                       key = {i}
                       onClick = {() => {
-                        navigate(`/view-course/${courseEntireData?._id}/section/${course?._id}/sub-section/${topic?._id}`)
+                        navigate(`/view-course/${courseId}/section/${course?._id}/sub-section/${topic?._id}`)
                         setVideoBarActive(topic._id)
                       }}
                     >
-                      <input  type="checkbox" checked={completedLectures.includes(topic?._id)} onChange={() => {}} />
+                      <input  type="checkbox" defaultChecked={completedLectures.includes(topic._id) ? true : false} onChange={handleCompleteLecture} />
                       {topic.title}
                     </div>
                   ))}
