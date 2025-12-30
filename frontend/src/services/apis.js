@@ -1,4 +1,4 @@
-const BASE_URL = process.env.REACT_APP_SECRET_NAME
+const BASE_URL = import.meta.env.VITE_SECRET_NAME
 
 // AUTH ENDPOINTS
 export const endpoints = {

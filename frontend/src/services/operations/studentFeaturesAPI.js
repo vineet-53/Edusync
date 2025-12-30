@@ -4,7 +4,7 @@ import { apiConnector } from "../apiconnector";
 import { studentEndpoints } from "../apis";
 import { resetCart } from "../../slices/cartSlice";
 import { setPaymentLoading } from "../../slices/courseSlice";
-const razorpayKey = process.env.REACT_APP_RAZORPAY_KEY;
+const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY;
 
 
 // embedding the razorpay script for the razorpay UI
