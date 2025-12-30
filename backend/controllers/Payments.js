@@ -154,7 +154,7 @@ exports.verifySignature = async (req, res) => {
                 );
                 //set course progress
                 const newCourseProgress = new CourseProgress({
-                    userID: userId,
+                    userId: userId,
                     courseID: course_id,
                 })
                 await newCourseProgress.save()
@@ -198,22 +198,10 @@ exports.verifySignature = async (req, res) => {
     try {
         const body = `${razorpay_order_id}|${razorpay_payment_id}`
         const generatedSignature = crypto.createHmac("sha256", process.env.RAZORPAY_SECRET).update(body.toString()).digest("hex");
-        console.log("VERFYING SIGNATURE")
         if (generatedSignature === razorpay_signature) {
             await enrolleStudent(courses, userId);
-            return res.status(200).json({  
-                success : true, 
-                message : "Payment Success"
-            })
-        }
-        else {
-            return res.status(400).json({
-                success: false,
-                message: "Invalid Signature Found.",
-            });
         }
     } catch (error) {
-        console.error(error);
         return res.status(500).json({
             success: false,
             message: error.message,

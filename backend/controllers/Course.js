@@ -202,7 +202,7 @@ exports.getAllCourses = async (req, res) => {
         studentsEnrolled: true,
       },
     )
-      .populate("instructor")
+      .populate("instructor").populate("ratingAndReviews")
       .exec();
 
     return res.status(200).json({
