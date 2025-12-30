@@ -23,7 +23,9 @@ export default function ViewCourse() {
     })()
   }, [courseId, sectionId, subSectionId])
 
+  const userAlreadyRated = () => { 
 
+  }
 
   return (
     <>

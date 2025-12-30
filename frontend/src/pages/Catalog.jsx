@@ -35,7 +35,7 @@ const Catalog = () => {
                 setCatalogPageData(res);
             }
             catch(error) {
-                console.log(error)
+                // console.log(error)
             }
         }
         if(categoryId) {

@@ -18,7 +18,7 @@ const ContactUsForm = () => {
           await apiConnector( "POST",  contactusEndpoint.CONTACT_US_API, data);
     }
     catch (error) {
-      console.log("ERROR MESSAGE - ", error.message)
+      // console.log("ERROR MESSAGE - ", error.message)
     }
     toast.dismiss(toastId)
     setLoading(false)

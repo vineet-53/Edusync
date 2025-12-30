@@ -34,7 +34,7 @@ export async function buyCourse(token, courses, userDetails, navigate, dispatch)
             toast.error("SDK failed loading")
             return;
         }
-        console.log("SDK success")
+        // console.log("SDK success")
 
         const orderResponse = await apiConnector("POST", studentEndpoints.COURSE_PAYMENT_API, { courses }, {
             Authorization: `Bearer ${token}`
@@ -44,7 +44,7 @@ export async function buyCourse(token, courses, userDetails, navigate, dispatch)
             throw new Error(orderResponse.data.message);
         }
 
-        console.log("PRINTING ORDER", orderResponse);
+        // console.log("PRINTING ORDER", orderResponse);
 
         const options = {
             key: razorpayKey,
@@ -89,7 +89,7 @@ async function sendPaymentSuccessEmail(response, amount, token) {
         })
     }
     catch(error) {
-        console.log("PAYMENT SUCCESS EMAIL ERROR....", error);
+        // console.log("PAYMENT SUCCESS EMAIL ERROR....", error);
     }
 }
 
@@ -98,7 +98,7 @@ async function verifyPayment(bodyData, token, navigate, dispatch) {
     const toastId = toast.loading("Verifying Payment....");
     dispatch(setPaymentLoading(true));
     try{
-        console.log("BODYDATA" , bodyData)
+        // console.log("BODYDATA" , bodyData)
         const response  = await apiConnector("POST", studentEndpoints.COURSE_VERIFY_API, bodyData, {
             Authorization:`Bearer ${token}`,
         })
@@ -111,7 +111,7 @@ async function verifyPayment(bodyData, token, navigate, dispatch) {
         dispatch(resetCart());
     }   
     catch(error) {
-        console.log("PAYMENT VERIFY ERROR....", error);
+        // console.log("PAYMENT VERIFY ERROR....", error);
         toast.error("Could not verify Payment");
     }
     toast.dismiss(toastId);

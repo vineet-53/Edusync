@@ -37,7 +37,7 @@ function CourseDetails(){
         setResponse(res)
       }
       catch (error) {
-        console.log("Could not fetch Course Details")
+        // console.log("Could not fetch Course Details")
       }
     })()
   }, [courseId])

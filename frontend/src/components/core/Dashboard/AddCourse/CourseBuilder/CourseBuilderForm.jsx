@@ -26,7 +26,7 @@ export default function CourseBuilderForm() {
   }
 
   const onSubmit = async (data) => {
-    console.log(data)
+    // console.log(data)
     setLoading(true)
     let response
 
@@ -47,7 +47,7 @@ export default function CourseBuilderForm() {
         },
         token, { new: true }
       )
-      console.log("save", response)
+      // console.log("save", response)
     }
 
     if (response) {

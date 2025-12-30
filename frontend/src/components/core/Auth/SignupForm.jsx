@@ -55,7 +55,7 @@ function SignupForm() {
     }
     catch(error) { 
       setError(true);
-      console.log(error)
+      // console.log(error)
       setErrorMessage(error.message)
       return;
     }

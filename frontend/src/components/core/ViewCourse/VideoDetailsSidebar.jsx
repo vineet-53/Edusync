@@ -13,10 +13,10 @@ export default function VideoDetailsSidebar({ setReviewModal }){
   const navigate = useNavigate()
   const location = useLocation()
   const { sectionId, subSectionId } = useParams()
-  const {courseId, courseSectionData, courseEntireData, totalNoOfLectures, completedLectures, } = useSelector((state) => state.viewCourse)
-
-  const handleCompleteLecture = () => { 
-
+  const {course, courseId, courseSectionData, courseEntireData, totalNoOfLectures, completedLectures, } = useSelector((state) => state.viewCourse)
+  const { user } = useSelector(state => state.profile)
+  const handleCompleteLecture = (e) => { 
+    // console.log("clicked on handle lecture", e.target.checked)
   }
 
   useEffect(() => {
@@ -29,7 +29,12 @@ export default function VideoDetailsSidebar({ setReviewModal }){
       setVideoBarActive(activeSubSectionId)
     })()
   }, [courseSectionData, courseEntireData, location.pathname])
+  const  userAlreadyRated = () => { 
+    return course.ratingAndReviews.find(entry => { 
+      if(entry.user == user._id) return true;
+    })
 
+  }
 
   return (
     <>
@@ -44,10 +49,10 @@ export default function VideoDetailsSidebar({ setReviewModal }){
         <div className="mx-5 flex flex-col items-start justify-between gap-2 gap-y-4 border-b border-richblack-600 py-5 text-lg font-bold text-richblack-25">
          
           <div className="flex w-full items-center justify-between ">
-            <div onClick={() => {navigate(`/dashboard/enrolled-courses`)}} title="back"  className="flex h-[35px] w-[35px] items-center justify-center rounded-full bg-richblack-100 p-1 text-richblack-700 hover:scale-90"  >
+            <div onClick={() => {navigate(`/dashboard/enrolled-courses`)}} title="back"  className="cursor-pointer flex h-[35px] w-[35px] items-center justify-center rounded-full bg-richblack-100 p-1 text-richblack-700 hover:scale-90"  >
               <IoIosArrowBack size={30} />
             </div>
-            <IconBtn text="Add Review" customClasses="ml-auto" onclick={() => setReviewModal(true)} />
+            { !userAlreadyRated()  && <IconBtn text="Add Review" customClasses="ml-auto" onclick={() => setReviewModal(true)} />}
           </div>
 
           <div className="flex flex-col">
